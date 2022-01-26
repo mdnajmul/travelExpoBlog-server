@@ -56,7 +56,7 @@ async function run() {
         } else {
           blogs = await cursor.toArray();
         }
-        res.json(blogs);
+        res.send({ count, blogs });
       } else {
         res.json({ message: "Blog Not Found!" });
       }

@@ -148,6 +148,16 @@ async function run() {
       const result = await userCollection.insertOne(newUser);
       res.json(result);
     });
+
+    // PUT - Update user data to database for third party login system
+    app.put("/users", async (req, res) => {
+      const userData = req.body;
+      const filter = { email: userData.email };
+      const options = { upsert: true };
+      const updateDoc = { $set: userData };
+      const result = await userCollection.updateOne(filter, updateDoc, options);
+      res.json(result);
+    });
   } finally {
     // await client.close();
   }

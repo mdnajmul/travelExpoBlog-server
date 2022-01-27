@@ -73,6 +73,41 @@ async function run() {
       res.json(blogDetails);
     });
 
+    // POST - Add a tour blog
+    app.post("/addblog", async (req, res) => {
+      // Extract image data and convert it to binary base 64
+      const pic = req.files.image;
+      const picData = pic.data;
+      const encodedPic = picData.toString("base64");
+      const imageBuffer = Buffer.from(encodedPic, "base64");
+      // Extract other information and make our blog object including image for saveing into MongoDB
+      const {
+        title,
+        details,
+        expense,
+        location,
+        rating,
+        date,
+        writer,
+        status,
+        email,
+      } = req.body;
+      const blog = {
+        title,
+        details: details.split("\n"),
+        image: imageBuffer,
+        expense,
+        location,
+        rating,
+        date,
+        writer,
+        status,
+        email,
+      };
+      const result = await blogCollection.insertOne(blog);
+      res.json(result);
+    });
+
     /* ========================= Blog Collection END ======================= */
 
     /* ========================= Top Tour Spot Collection START ======================= */

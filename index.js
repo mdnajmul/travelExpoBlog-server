@@ -166,6 +166,20 @@ async function run() {
       const result = await userCollection.deleteOne(query);
       res.json({ _id: id, deletedCount: result.deletedCount });
     });
+
+    // GET - Admin Status.
+    app.get("/users/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const result = await userCollection.findOne(query);
+      let isAdmin = false;
+      if (result?.role === "admin") {
+        isAdmin = true;
+        res.json({ admin: isAdmin });
+      } else {
+        res.json({ admin: isAdmin });
+      }
+    });
   } finally {
     // await client.close();
   }

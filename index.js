@@ -94,7 +94,7 @@ async function run() {
       } = req.body;
       const blog = {
         title,
-        details: details.split("\n"),
+        details,
         image: imageBuffer,
         expense,
         location,

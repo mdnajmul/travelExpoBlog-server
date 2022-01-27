@@ -61,6 +61,21 @@ async function run() {
         res.json({ message: "Blog Not Found!" });
       }
     });
+
+    /* ========================= Blog Collection END ======================= */
+
+    /* ========================= Top Tour Spot Collection START ======================= */
+
+    // GET - Get all top tour spots
+    app.get("/top-spots", async (req, res) => {
+      const cursor = topSpotCollection.find({});
+      if ((await cursor.count()) > 0) {
+        const topSpots = await cursor.toArray();
+        res.json(topSpots);
+      } else {
+        res.json({ message: "Tour Spot Not Found!" });
+      }
+    });
   } finally {
     // await client.close();
   }

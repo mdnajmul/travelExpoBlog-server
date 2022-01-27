@@ -141,6 +141,13 @@ async function run() {
       const users = await cursor.toArray();
       res.json(users);
     });
+
+    // POST - Save user info to user collection
+    app.post("/users", async (req, res) => {
+      const newUser = req.body;
+      const result = await userCollection.insertOne(newUser);
+      res.json(result);
+    });
   } finally {
     // await client.close();
   }

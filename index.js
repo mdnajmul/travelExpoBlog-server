@@ -1,7 +1,9 @@
 const express = require("express");
 const { MongoClient } = require("mongodb");
+const ObjectId = require("mongodb").ObjectId;
 const cors = require("cors");
 require("dotenv").config();
+const fileUpload = require("express-fileupload");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -9,6 +11,7 @@ const port = process.env.PORT || 5000;
 // middleware
 app.use(cors());
 app.use(express.json());
+app.use(fileUpload());
 
 // Database Info
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.3u7yr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
@@ -75,6 +78,14 @@ async function run() {
       } else {
         res.json({ message: "Tour Spot Not Found!" });
       }
+    });
+
+    // GET API - Single Top Tour Spot Details
+    app.get("/top-spots/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const spotDetails = await topSpotCollection.findOne(query);
+      res.json(spotDetails);
     });
   } finally {
     // await client.close();

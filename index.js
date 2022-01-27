@@ -196,6 +196,8 @@ async function run() {
       res.json(result);
       console.log(result);
     });
+
+    /* ========================= User Collection END ======================= */
   } finally {
     // await client.close();
   }

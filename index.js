@@ -65,6 +65,14 @@ async function run() {
       }
     });
 
+    // GET API - Single blog Details
+    app.get("/blogs/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const blogDetails = await blogCollection.findOne(query);
+      res.json(blogDetails);
+    });
+
     /* ========================= Blog Collection END ======================= */
 
     /* ========================= Top Tour Spot Collection START ======================= */

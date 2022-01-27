@@ -158,6 +158,14 @@ async function run() {
       const result = await userCollection.updateOne(filter, updateDoc, options);
       res.json(result);
     });
+
+    // Delete - Delete an user from DB
+    app.delete("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await userCollection.deleteOne(query);
+      res.json({ _id: id, deletedCount: result.deletedCount });
+    });
   } finally {
     // await client.close();
   }

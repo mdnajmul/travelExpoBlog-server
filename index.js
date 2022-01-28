@@ -214,19 +214,24 @@ async function run() {
     });
 
     // PUT - Set an user role as admin
-    app.put("/make-admin/:id", async (req, res) => {
-      const filter = req.params.id;
-      const updateDoc = {
-        $set: {
-          role: "admin",
-        },
-      };
-      const result = await userCollection.updateOne(
-        { email: filter },
-        updateDoc
-      );
-      res.json(result);
-      console.log(result);
+    app.put("/make-admin", async (req, res) => {
+      const userEmail = req.query.useremail;
+      const user = req.body;
+      if (user) {
+        const requesterAccount = await userCollection.findOne({
+          email: userEmail,
+        });
+        if (requesterAccount.role === "admin") {
+          const filter = { email: user.email };
+          const updateDoc = { $set: { role: "admin" } };
+          const result = await userCollection.updateOne(filter, updateDoc);
+          res.json(result);
+        }
+      } else {
+        res
+          .status(403)
+          .json({ message: "you do not have access to make admin" });
+      }
     });
 
     /* ========================= User Collection END ======================= */

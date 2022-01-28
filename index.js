@@ -119,6 +119,28 @@ async function run() {
       res.json(result);
     });
 
+    // Delete - Delete a blog
+    app.delete("/delete-blog/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await blogCollection.deleteOne(query);
+      res.json({ _id: id, deletedCount: result.deletedCount });
+    });
+
+    // update status
+    app.put("/updateStatus/:id", (req, res) => {
+      const id = req.params.id;
+      const updatedStatus = "approved";
+      const filter = { _id: ObjectId(id) };
+      blogCollection
+        .updateOne(filter, {
+          $set: { status: updatedStatus },
+        })
+        .then((result) => {
+          res.send(result);
+        });
+    });
+
     /* ========================= Blog Collection END ======================= */
 
     /* ========================= Top Tour Spot Collection START ======================= */

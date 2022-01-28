@@ -173,12 +173,11 @@ async function run() {
       const query = { email: email };
       const result = await userCollection.findOne(query);
       let isAdmin = false;
-      if (result?.role === "admin") {
+      const role = result.role ? "admin" : "";
+      if (role) {
         isAdmin = true;
-        res.json({ admin: isAdmin });
-      } else {
-        res.json({ admin: isAdmin });
       }
+      res.json({ admin: isAdmin });
     });
 
     // PUT - Set an user role as admin

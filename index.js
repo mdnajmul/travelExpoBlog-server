@@ -38,7 +38,7 @@ async function run() {
 
     /* ========================= Blog Collection START ======================= */
 
-    // GET - Get all travel blogs with pagination
+    // GET - Get approved travel blogs with pagination
     app.get("/blogs", async (req, res) => {
       const query = { status: "approved" };
       const cursor = blogCollection.find(query);
@@ -62,6 +62,17 @@ async function run() {
         res.send({ count, blogs });
       } else {
         res.json({ message: "Blog Not Found!" });
+      }
+    });
+
+    //GET API - Get all travel blogs
+    app.get("/allblogs", async (req, res) => {
+      const cursor = blogCollection.find({});
+      if ((await cursor.count()) > 0) {
+        const blogs = await cursor.toArray();
+        res.json(blogs);
+      } else {
+        res.json({ message: "Blogs Are Not Found!" });
       }
     });
 
